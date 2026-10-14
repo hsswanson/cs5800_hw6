@@ -1,0 +1,52 @@
+@startuml
+title School Facility Rental - Activity
+
+|Renter|
+start
+:Choose facility and date;
+|Website|
+:Check availability;
+|School Staff|
+if (available?) then (yes)
+  |Website|
+  :show available;
+  |School Staff|
+  if(request approved?) then (yes)
+          |Website|
+          :show request approved;
+          |Payment Service|
+          if(payment approved?) then (yes)
+            |Payment Service|
+            :Renter charged;
+            |School Staff|
+            :Create request;
+            |Website|
+            :Show reservation created;
+            |Email Service|
+            :email reservation;
+            stop
+           else (no)
+                 |Website|
+                 :Show payment invalid;
+                 |Email Service|
+                 :email rejection;
+                 stop
+           endif
+  else (no)
+          |Website|
+          :show request denied;
+          |Email Service|
+          :email rejection;
+          stop
+        endif
+
+else (no)
+  |Website|
+  :Show not available;
+  stop
+endif
+
+
+
+
+@enduml

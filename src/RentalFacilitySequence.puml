@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Renter -> Website : submit request
+Website -> School_Staff: check availability
+alt Reservation available
+  School_Staff -> Website: confirm availability
+  Website -> School_Staff: check request
+
+  alt Request approved
+    School_Staff -> Website: confirm request
+    Website -> Payment_Service:check payment
+    alt payment confirmed
+        Payment_Service -> Website: confirm payment
+        Website -> Payment_Service: charge renter
+        Payment_Service-> Website: Save booking
+        Website -> Email_Service : email reservation
+        else payment denied
+        Payment_Service -> Website: deny payment
+        Website -> Email_Service : email rejection
+        end
+  else Request Denied
+    School_Staff -> Website : deny request
+    Website -> Email_Service: email rejection
+else Reservation unavailable
+  School_Staff -> Website: deny availability
+  Website -> Email_Service: email rejection
+
+  end
+end
+
+
+@enduml
